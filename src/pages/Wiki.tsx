@@ -172,9 +172,45 @@ interface VideoProps {
   src: string;
   poster?: string;
   caption?: string;
+  youtubeId?: string;
 }
 
-const Video: React.FC<VideoProps> = ({ src, poster = '/api/placeholder/800/450', caption }) => {
+const Video: React.FC<VideoProps> = ({ src, poster = '/api/placeholder/800/450', caption, youtubeId }) => {
+  // Function to extract YouTube ID from URL if provided
+  const getYoutubeId = (url: string): string | null => {
+    // Handle various YouTube URL formats
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+    const match = url.match(regExp);
+    return (match && match[2].length === 11) ? match[2] : null;
+  };
+
+  // If a direct YouTube ID is provided, use it, otherwise try to extract from src
+  const videoId = youtubeId || (src ? getYoutubeId(src) : null);
+  
+  // If we have a valid YouTube ID, render the embed
+  if (videoId) {
+    return (
+      <figure className="mb-6">
+        <div className="overflow-hidden rounded-lg border border-zinc-700 bg-zinc-900">
+          <div className="aspect-w-16 aspect-h-9 relative">
+            <iframe
+              src={`https://www.youtube.com/embed/${videoId}`}
+              title="YouTube video player"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              className="absolute inset-0 w-full h-full"
+            ></iframe>
+          </div>
+        </div>
+        {caption && (
+          <figcaption className="mt-2 text-center text-sm text-gray-400">{caption}</figcaption>
+        )}
+      </figure>
+    );
+  }
+  
+  // Fallback to regular video display if not a YouTube video
   return (
     <figure className="mb-6">
       <div className="overflow-hidden rounded-lg border border-zinc-700 bg-zinc-900">
@@ -324,10 +360,11 @@ const Wiki: React.FC = () => {
           />
         );
         continue;
-      } else if (line.trim().match(/^\[Video(\s+src="([^"]+)")?(\s+poster="([^"]+)")?(\s+caption="([^"]+)")?\]$/)) {
+      } else if (line.trim().match(/^\[Video(\s+src="([^"]+)")?(\s+youtubeId="([^"]+)")?(\s+poster="([^"]+)")?(\s+caption="([^"]+)")?\]$/)) {
         const srcMatch = line.match(/src="([^"]+)"/);
         const posterMatch = line.match(/poster="([^"]+)"/);
         const captionMatch = line.match(/caption="([^"]+)"/);
+        const youtubeIdMatch = line.match(/youtubeId="([^"]+)"/);
         
         result.push(
           <Video 
@@ -335,6 +372,7 @@ const Wiki: React.FC = () => {
             src={srcMatch ? srcMatch[1] : '/api/placeholder/video'}
             poster={posterMatch ? posterMatch[1] : '/api/placeholder/800/450'}
             caption={captionMatch ? captionMatch[1] : undefined}
+            youtubeId={youtubeIdMatch ? youtubeIdMatch[1] : undefined}
           />
         );
         continue;
