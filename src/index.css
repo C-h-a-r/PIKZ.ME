@@ -1,0 +1,50 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-zinc-900 text-gray-100;
+  }
+}
+
+.nav-link {
+  @apply px-4 py-2 transition-all duration-300 text-gray-400 hover:text-white;
+}
+
+.nav-link.active {
+  @apply text-white;
+}
+
+.product-card {
+  @apply bg-zinc-800 rounded-xl overflow-hidden transition-all duration-300 hover:transform hover:scale-105 hover:shadow-2xl border border-zinc-700;
+}
+
+.glow {
+  @apply relative;
+}
+
+.glow::before {
+  content: '';
+  @apply absolute -inset-1 bg-red-500 rounded-lg blur opacity-25 transition-opacity duration-300 -z-10;
+}
+
+.glow:hover::before {
+  @apply opacity-50;
+}
+
+.announcement-chip {
+  @apply bg-red-500/10 border border-red-500/20 text-red-400 px-4 py-2 rounded-full inline-flex items-center space-x-2;
+}
+
+.info-box {
+  @apply bg-blue-500/10 border border-blue-500/20 rounded-lg p-4 my-4;
+}
+
+.warning-box {
+  @apply bg-yellow-500/10 border border-yellow-500/20 rounded-lg p-4 my-4;
+}
+
+.error-box {
+  @apply bg-red-500/10 border border-red-500/20 rounded-lg p-4 my-4;
+}
