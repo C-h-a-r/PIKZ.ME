@@ -192,14 +192,15 @@ const Video: React.FC<VideoProps> = ({ src, poster = '/api/placeholder/800/450',
     return (
       <figure className="mb-6">
         <div className="overflow-hidden rounded-lg border border-zinc-700 bg-zinc-900">
-          <div className="aspect-w-16 aspect-h-9 relative">
+          {/* Responsive container with 16:9 aspect ratio */}
+          <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
             <iframe
               src={`https://www.youtube.com/embed/${videoId}`}
               title="YouTube video player"
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
-              className="absolute inset-0 w-full h-full"
+              className="absolute top-0 left-0 w-full h-full"
             ></iframe>
           </div>
         </div>
@@ -214,9 +215,9 @@ const Video: React.FC<VideoProps> = ({ src, poster = '/api/placeholder/800/450',
   return (
     <figure className="mb-6">
       <div className="overflow-hidden rounded-lg border border-zinc-700 bg-zinc-900">
-        <div className="aspect-w-16 aspect-h-9 relative">
+        <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
           {/* This would be replaced with actual video element in production */}
-          <div className="w-full h-full flex flex-col items-center justify-center text-center p-8">
+          <div className="absolute top-0 left-0 w-full h-full flex flex-col items-center justify-center text-center">
             <img src={poster} alt="Video thumbnail" className="absolute inset-0 w-full h-full object-cover" />
             <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
               <div className="w-16 h-16 rounded-full bg-red-500 bg-opacity-80 flex items-center justify-center">
