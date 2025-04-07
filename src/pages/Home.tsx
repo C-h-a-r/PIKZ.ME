@@ -6,26 +6,69 @@ import Footer from '../components/Footer';
 const products = [
   {
     id: 1,
-    title: "Pro Camera Kit",
-    description: "Professional-grade camera equipment for stunning shots",
-    price: 1299.99,
-    image: "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+    title: "Shards - AFK Area & Shop",
+    description: "Allow your players to gain Shards while staying AFK on your server.",
+    price: 9.99,
+    image: "https://builtbybit.com/attachments/shards-design-thumb-png.881406/"
   },
   {
     id: 2,
-    title: "Lighting Package",
-    description: "Complete studio lighting setup for perfect illumination",
-    price: 799.99,
-    image: "https://images.unsplash.com/photo-1516724562728-afc4865086e7?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+    title: "NeoSpawner - Sellwand & Boosters",
+    description: "The new Solution for E-spawners, Configurable, Boosters, Sellwand +MORE!",
+    price: 19.99,
+    image: "https://cdn.builtbybit.com/carousel_images/1685/1685672-cdc0eea55ef49e207fb103d7c7ed64ef.jpg"
   },
   {
     id: 3,
-    title: "Audio Bundle",
-    description: "High-quality audio recording equipment for crystal clear sound",
-    price: 599.99,
-    image: "https://images.unsplash.com/photo-1520866218514-a60d7c02273b?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+    title: "EasySell - Fast & Efficient",
+    description: "Simple Sell plugin that you wished to have on your server.",
+    price: 4.99,
+    image: "https://cdn.builtbybit.com/carousel_images/1682/1682042-ec9d24f1fafd8714155f554cfcd4b43d.jpg"
+  },
+  {
+    id: 4,
+    title: "Halloween Cosmetics - Ultimate Cosmetics",
+    description: "Perfect item's to bring to your server for halloween update",
+    price: 5.99,
+    image: "https://cdn.builtbybit.com/carousel_images/1651/1651032-55d405894afbea6ccf4f24a8654f4895.jpg"
+  },
+  {
+    id: 5,
+    title: "DonutSMP Setup - The Ultimate replica",
+    description: "The #1 DonutSMP replica - Premium & Optimized server setup!",
+    price: 29.99,
+    image: "https://cdn.builtbybit.com/carousel_images/1687/1687434-76515bbe9c89a73f8aef52db5feff0c6.jpg"
+  },
+  {
+    id: 6,
+    title: "ZelBounty - UI Based & Optimized",
+    description: "The ultimate GUI based bounty plugin for SMP servers.",
+    price: 8.99,
+    image: "https://cdn.builtbybit.com/carousel_images/1573/1573617-cd440840bf521c86a48cdd2f763260f0.jpg"
+  },
+  {
+    id: 7,
+    title: "ZelAuction - Ultimate Auction house",
+    description: "Premium & Optimized Ever imagined an auction plugin with no duplication bugs? Well here it is..",
+    price: 11.99,
+    image: "https://cdn.builtbybit.com/carousel_images/1694/1694536-9bae6e438fd20d65c4dec71f1df21cea.jpg"
+  },
+  {
+    id: 8,
+    title: "UltraSteal - Ultimate Lives Plugin",
+    description: "The most advanced lifesteal system on the market.",
+    price: 8.99,
+    image: "https://cdn.builtbybit.com/carousel_images/1691/1691273-1d9266c7b689e8127e699e3d22b6c9ca.jpg"
+  },
+  {
+    id: 9,
+    title: "Practice Setup CrystalPVP",
+    description: "Set up the perfect practice environment for your server to begin the Crystal PvP aura.",
+    price: 19.99,
+    image: "https://cdn.builtbybit.com/carousel_images/1561/1561159-083fa420c65fc1614f16e7c398adbfbd.jpg"
   }
 ];
+
 
 const Home = () => {
   return (

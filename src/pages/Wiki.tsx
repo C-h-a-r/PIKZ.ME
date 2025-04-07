@@ -1,185 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import Footer from '../components/Footer';
 
-// Define types for packages and content
+// Define types for packages
 interface Package {
   id: string;
   name: string;
   description: string;
-  content: string;
+  contentUrl: string; // URL to the markdown file
 }
 
-// Sample content with new components
+// Sample packages with URLs to markdown files
 const packages: Package[] = [
   {
     id: 'pro-camera',
     name: 'Pro Camera Kit',
     description: 'Professional camera equipment for photographers',
-    content: `
-# Pro Camera Kit
-
-## Overview
-Our professional camera kit includes everything you need for high-quality photography and videography.
-
-[Info] This kit is perfect for professional photographers and videographers who need reliable, high-quality equipment.
-
-### Features
-- 4K video capability
-- 24.2MP sensor
-- Weather-sealed body
-- Dual card slots
-
-[Warning] Always ensure batteries are fully charged before important shoots.
-
-[Code language="javascript" title="Camera Configuration API"]
-// Example code for configuring camera settings
-const camera = new ProCamera();
-
-camera.configure({
-  resolution: '4K',
-  frameRate: 60,
-  bitDepth: 10,
-  colorProfile: 'LOG',
-  stabilization: true
-});
-
-// Save user presets
-function saveUserPreset(name, settings) {
-  localStorage.setItem(\`preset_\${name}\`, JSON.stringify(settings));
-  return true;
-}
-[/Code]
-
-[Tabs]
-[Tab title="Basic Setup"]
-1. Insert battery
-2. Insert memory card
-3. Attach lens
-4. Power on camera
-5. Set date and time
-[/Tab]
-[Tab title="Advanced Setup"]
-1. Configure custom buttons
-2. Set autofocus parameters
-3. Customize picture profiles
-4. Configure network settings
-5. Calibrate viewfinder
-[/Tab]
-[Tab title="Accessories"]
-- Extra batteries
-- Battery grip
-- Remote trigger
-- Lens filters
-- Memory cards
-[/Tab]
-[/Tabs]
-
-[Image src="/api/placeholder/800/450" caption="Camera body with premium lens attachment" alt="Professional Camera Setup"]
-
-[Video src="/api/placeholder/video" poster="/api/placeholder/800/450" caption="Quick start guide video tutorial"]
-
-[FAQ]
-[Q] How long does the battery last?
-[A] The standard battery provides approximately 4 hours of continuous shooting or around 500 photos. Extended batteries are available that can double this capacity.
-
-[Q] Is this camera weather resistant?
-[A] Yes, the camera body is weather-sealed against dust and moisture, allowing for shooting in challenging environmental conditions. However, it is not fully waterproof and should not be submerged.
-
-[Q] What memory cards are compatible?
-[A] The camera supports both SD UHS-II and CFexpress Type B cards. For 4K video recording, we recommend using CFexpress cards with minimum write speeds of 400MB/s.
-[/FAQ]
-
-## Maintenance
-Regular cleaning and maintenance is essential...
-    `
+    contentUrl: 'https://raw.githubusercontent.com/C-h-a-r/pikz-wiki-test/refs/heads/main/file.md'
   },
   {
     id: 'lighting',
     name: 'Lighting Package',
     description: 'Professional lighting for studio and location shoots',
-    content: `
-# Lighting Package
-
-[Info] Professional lighting equipment for studio and location shoots.
-
-## Components
-- 2x LED Panel Lights
-- 1x Ring Light
-- Light Stands
-- Diffusers
-
-[Code language="python" title="Lighting Control Script"]
-import dmx
-
-# Connect to DMX controller
-controller = dmx.Controller(port="COM3")
-
-def set_light_temperature(fixture_id, temp_kelvin):
-    """
-    Set color temperature of a light fixture
-    temp_kelvin: 3200-5600K range
-    """
-    # Map temperature to DMX values
-    normalized = (temp_kelvin - 3200) / 2400
-    value = int(normalized * 255)
-    controller.set_channel(fixture_id, 2, value)
-    return f"Set fixture {fixture_id} to {temp_kelvin}K"
-
-# Example usage
-set_light_temperature(1, 5600)  # Daylight
-set_light_temperature(2, 3200)  # Tungsten
-[/Code]
-
-[Tabs]
-[Tab title="Setup"]
-1. Extend light stands
-2. Attach lighting fixtures
-3. Connect power supplies
-4. Set initial brightness levels
-5. Position according to lighting diagram
-[/Tab]
-[Tab title="Controls"]
-- Intensity dial: 0-100%
-- Color temperature: 3200K-5600K
-- Diffusion controls
-- Barn door adjustments
-- DMX channels 1-4
-[/Tab]
-[Tab title="Patterns"]
-- Three-point lighting
-- Butterfly lighting
-- Rembrandt lighting
-- Split lighting
-- Loop lighting
-[/Tab]
-[/Tabs]
-
-[Image src="/api/placeholder/800/450" caption="Three-point lighting setup demonstration" alt="Professional Lighting Setup"]
-
-[FAQ]
-[Q] How much power do these lights consume?
-[A] Each LED panel draws 95W at full power. The entire kit when used simultaneously requires approximately 250W.
-
-[Q] Can these lights be controlled remotely?
-[A] Yes, all included lights support DMX control protocols and can also be controlled via the companion smartphone app (iOS and Android).
-
-[Q] Are the lights flicker-free for high-speed recording?
-[A] Yes, all lights in this package are flicker-free up to 1/8000s shutter speed, making them suitable for high-speed recording up to 240fps.
-[/FAQ]
-
-### Setup Instructions
-1. Stand Assembly
-2. Light Mounting
-3. Power Connection
-
-[Warning] Always secure light stands with sandbags when using in windy conditions.
-
-## Best Practices
-Proper lighting techniques for different scenarios...
-    `
+    contentUrl: '/content/lighting.md'
   }
 ];
 
@@ -391,14 +236,37 @@ const FAQ: React.FC<FAQProps> = ({ items }) => {
 // Main Wiki Component
 const Wiki: React.FC = () => {
   const [selectedPackage, setSelectedPackage] = useState<Package>(packages[0]);
+  const [content, setContent] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  // Fetch content from markdown file
+  useEffect(() => {
+    setIsLoading(true);
+    
+    fetch(selectedPackage.contentUrl)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`Failed to fetch content: ${response.statusText}`);
+        }
+        return response.text();
+      })
+      .then(data => {
+        setContent(data);
+        setIsLoading(false);
+      })
+      .catch(error => {
+        console.error("Error loading content:", error);
+        setContent(`# Error Loading Content\n\nUnable to load content from ${selectedPackage.contentUrl}`);
+        setIsLoading(false);
+      });
+  }, [selectedPackage]);
 
   // Parse content and extract custom components
   const parseContent = (content: string): React.ReactNode[] => {
-    // Split content by line for easier parsing
     const lines = content.split('\n');
     const result: React.ReactNode[] = [];
     
-    // Pattern-tracking variables
+   
     let currentBlockType: string | null = null;
     let blockContent: string[] = [];
     let codeLanguage = '';
@@ -411,11 +279,11 @@ const Wiki: React.FC = () => {
     let currentQuestion = '';
     let currentAnswer = '';
     
-    // Process each line
+
     for (let i = 0; i < lines.length; i++) {
       const line = lines[i];
       
-      // Check for block starting patterns
+  
       if (line.trim().match(/^\[Code(\s+language="([^"]+)")?(\s+title="([^"]+)")?\]$/)) {
         currentBlockType = 'code';
         blockContent = [];
@@ -490,7 +358,7 @@ const Wiki: React.FC = () => {
         continue;
       }
       
-      // Handle block ending patterns
+      
       if (line.trim() === '[/Code]') {
         if (currentBlockType === 'code') {
           result.push(
@@ -528,7 +396,6 @@ const Wiki: React.FC = () => {
         continue;
       } else if (line.trim() === '[/FAQ]') {
         if (currentBlockType === 'faq') {
-          // Add the last item if exists
           if (currentQuestion && currentAnswer) {
             faqItems.push({ question: currentQuestion, answer: currentAnswer });
           }
@@ -541,13 +408,12 @@ const Wiki: React.FC = () => {
         continue;
       }
       
-      // Process content within blocks
+
       if (currentBlockType === 'code') {
         blockContent.push(line);
       } else if (currentBlockType === 'tabs' && currentTabTitle) {
         currentTabContent += line + '\n';
       } else if (line.match(/^\[(\w+)\]\s+(.+)$/)) {
-        // Handle alert boxes
         const alertMatch = line.match(/^\[(\w+)\]\s+(.+)$/);
         if (alertMatch) {
           const [_, typeRaw, content] = alertMatch;
@@ -666,9 +532,15 @@ const Wiki: React.FC = () => {
                 animate={{ opacity: 1 }}
                 className="col-span-12 md:col-span-9 p-8"
               >
-                <div className="prose prose-invert max-w-none">
-                  {parseContent(selectedPackage.content)}
-                </div>
+                {isLoading ? (
+                  <div className="flex justify-center items-center py-12">
+                    <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-red-500"></div>
+                  </div>
+                ) : (
+                  <div className="prose prose-invert max-w-none">
+                    {parseContent(content)}
+                  </div>
+                )}
               </motion.div>
             </div>
           </div>
