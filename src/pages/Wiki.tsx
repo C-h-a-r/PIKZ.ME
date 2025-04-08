@@ -15,16 +15,10 @@ interface Package {
 // Sample packages with URLs to markdown files
 const packages: Package[] = [
   {
-    id: 'pro-camera',
-    name: 'Pro Camera Kit',
-    description: 'Professional camera equipment for photographers',
+    id: 'licenses',
+    name: 'Licenses',
+    description: 'Learn how the license system works',
     contentUrl: 'https://raw.githubusercontent.com/C-h-a-r/pikz-wiki-test/refs/heads/main/file.md'
-  },
-  {
-    id: 'lighting',
-    name: 'Lighting Package',
-    description: 'Professional lighting for studio and location shoots',
-    contentUrl: '/content/lighting.md'
   }
 ];
 
